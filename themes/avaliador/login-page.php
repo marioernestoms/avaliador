@@ -10,27 +10,35 @@
 global $current_user;
 global $wp_roles;
 
-get_header( 'dashboard' );
+get_header();
 
 ?>
 
 <main role="main">
-	<div class="container">
-			<form class="form-signin">
-				<img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-				<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-				<label for="inputEmail" class="sr-only">Email address</label>
-				<input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
-				<label for="inputPassword" class="sr-only">Password</label>
-				<input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" autocomplete="off" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
-				<div class="checkbox mb-3">
-					<label>
-					<input type="checkbox" value="remember-me"> Remember me
-					</label>
+	<div class="container text-center">
+		<?php if ( ! is_user_logged_in() ) : ?>
+				
+			<form id="login" action="login" method="post" style="margin: 0 30%; padding: 20vh 0; width: 40%;">
+				<div class="form-group">
+					<h2>Avaliador</h2>
+					<h3 class="login-infos mb-5">Bem-Vindo(a)!</h3>
+					<input id="username" class="form-control" type="text" name="username" placeholder="E-mail">
+					<input id="password" class="form-control mt-3" type="password" name="password" placeholder="Senha">
+					<p class="status mt-3"></p>
 				</div>
-				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+				<div class="row">
+					<div class="col-md-6 text-left">
+						<a class="link" href="<?php echo wp_lostpassword_url(); ?>">Esqueceu sua senha?</a>
+					</div>
+					<div class="col-md-6 text-right">
+						<input class="btn btn-outline-primary text-right" type="submit" value="Login" name="submit">
+					</div>
+				</div>
+				<?php wp_nonce_field( 'ajax-login-nonce', 'security' ); ?>
 			</form>
+
+		<?php endif; ?>
 	</div>
 </main>
 
-<?php get_footer( 'dashboard' ); ?>
+<?php get_footer(); ?>

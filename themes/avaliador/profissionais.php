@@ -7,6 +7,7 @@
  * @package marioernestoms
  */
 
+acf_form_head();
 global $current_user;
 global $wp_roles;
 

@@ -13,7 +13,8 @@
 						<?php
 						acf_form(
 							array(
-								'post_title' => true,
+								'post_title'   => true,
+								'submit_value' => 'Atualizar',
 							),
 						);
 						?>

@@ -46,7 +46,7 @@ function acf_form_fields_bootstrap_styles( $field ) {
 	$field['wrapper']['class'] .= ' form-group col-12';
 
 	// Add .form-control on fields
-	$field['class'] .= ' form-control';
+	//$field['class'] .= ' form-control';
 
 	return $field;
 
