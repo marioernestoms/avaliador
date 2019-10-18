@@ -41,7 +41,7 @@ global $wp_roles;
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
-					<a class="nav-link" href="/home">Profissionais</a>
+					<a class="nav-link" href="/profissionais">Profissionais</a>
 					</li>
 					<li class="nav-item">
 					<a class="nav-link" href="/empresas">Empresas</a>

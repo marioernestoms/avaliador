@@ -14,9 +14,11 @@ add_filter( 'show_admin_bar', '__return_false' );
  * Includes
  */
 require( 'includes/core/cpts.php' );
+require( 'includes/core/ajax-login.php' );
+require( 'includes/core/customize-acf-form.php' );
 
 function theme_enqueue_styles() {
-	$jeitin_version = '1.0.1';
+	$avaliador_version = '1.0.1';
 
 	/* Bootstrap Stylesheet [ REQUIRED ] */
 	wp_enqueue_style( 'bootstrap-css', '//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' );
@@ -26,83 +28,17 @@ function theme_enqueue_styles() {
 
 	/* SCRIPTS */
 	/* jQuery [ REQUIRED ] */
-	wp_enqueue_script( 'jquery', array(), $jeitin_version, 'all' );
+	wp_enqueue_script( 'jquery', array(), $avaliador_version, 'all' );
 
 	/* BootstrapJS [ RECOMMENDED ] */
-	wp_enqueue_script( 'popper-js', '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', array(), $jeitin_version, 'all' );
+	wp_enqueue_script( 'popper-js', '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', array(), $avaliador_version, 'all' );
 
-	wp_enqueue_script( 'bootstrap-js', '//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array(), $jeitin_version, 'all' );
+	wp_enqueue_script( 'bootstrap-js', '//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array(), $avaliador_version, 'all' );
 
 	/* Font Awesome[ OPTIONAL ] */
-	wp_enqueue_script( 'font-awesome-js', '//use.fontawesome.com/releases/v5.0.8/js/all.js', array(), $jeitin_version, 'all' );
+	wp_enqueue_script( 'font-awesome-js', '//use.fontawesome.com/releases/v5.0.8/js/all.js', array(), $avaliador_version, 'all' );
 }
 add_action( 'wp_enqueue_scripts', 'theme_enqueue_styles' );
-
-
-/**
- * ------------------------------
- * Function to start ajax login.
- * ------------------------------
- */
-function ajax_login_init() {
-
-	wp_register_script( 'ajax-login-script', get_stylesheet_directory_uri() . '/assets/js/ajax-login-script.js', array( 'jquery' ) );
-	wp_enqueue_script( 'ajax-login-script' );
-
-	wp_localize_script(
-		'ajax-login-script',
-		'ajax_login_object',
-		array(
-			'ajaxurl'        => admin_url( 'admin-ajax.php' ),
-			'redirecturl'    => home_url() . '/',
-			'loadingmessage' => __( 'Enviando as informações, aguarde ...' ),
-		)
-	);
-
-	// Enable the user with no privileges to run ajax_login() in AJAX.
-	add_action( 'wp_ajax_nopriv_ajaxlogin', 'ajax_login' );
-}
-
-// Execute the action only if the user isn't logged in.
-if ( ! is_user_logged_in() ) {
-	add_action( 'init', 'ajax_login_init' );
-}
-
-/**
- * ------------------------------
- * Function to send ajax login.
- * ------------------------------
- */
-function ajax_login() {
-
-	// First check the nonce, if it fails the function will break.
-	check_ajax_referer( 'ajax-login-nonce', 'security' );
-
-	// Nonce is checked, get the POST data and sign user on.
-	$info                  = array();
-	$info['user_login']    = filter_input( INPUT_POST, 'username' );
-	$info['user_password'] = filter_input( INPUT_POST, 'password' );
-	$info['remember']      = true;
-
-	$user_signon = wp_signon( $info, false );
-	if ( is_wp_error( $user_signon ) ) {
-		echo wp_json_encode(
-			array(
-				'loggedin' => false,
-				'message'  => __( 'Usuário ou senha inválido.' ),
-			)
-		);
-	} else {
-		echo wp_json_encode(
-			array(
-				'loggedin' => true,
-				'message'  => __( 'Logado com sucesso, redirecionando ...' ),
-			)
-		);
-	}
-
-	die();
-}
 
 // edit user
 add_action( 'wp_head', 'javascriptcode' ); // Write our JS below here
@@ -161,72 +97,70 @@ function mandabem_edit_user() {
 	die();
 }
 
+// Scripts for Ajax Filter Search
+function my_ajax_filter_search_scripts() {
+	wp_enqueue_script( 'my_ajax_filter_search', get_stylesheet_directory_uri() . '/assets/js/ajax-search-script.js', array(), '1.0', true );
+	wp_localize_script( 'my_ajax_filter_search', 'ajax_url', admin_url( 'admin-ajax.php' ) );
+}
+
+
+// Shortcode: [my_ajax_filter_search]
+function my_ajax_filter_search_shortcode() {
+	my_ajax_filter_search_scripts();
+
+	ob_start();
+	?>
+
+	<div id="my-ajax-filter-search">
+		<form class="form-inline mt-2 mt-md-0" action="" method="get">
+			<input class="form-control mr-sm-2" type="text" name="search" id="search" value="" placeholder="Search" aria-label="Search">
+
+			<select class="custom-select mx-3" name="cargos" id="cargos">
+				<option selected>Selecione</option>
+				<option value="1">Arquiteto de informação</option>
+				<option value="2">Designer</option>
+				<option value="3">Desenvolvedor Front-End</option>
+				<option value="3">Desenvolvedor Back-End</option>
+				<option value="3">Marketing Digital</option>
+			</select>
+
+			<input class="btn btn-outline-success my-2 my-sm-0" type="submit" id="submit" name="submit" value="Search">
+		</form>
+		<ul id="ajax_fitler_search_results"></ul>
+	</div>
+
+	<?php
+	return ob_get_clean();
+}
+
+add_shortcode( 'my_ajax_filter_search', 'my_ajax_filter_search_shortcode' );
+
 /**
- * Change first name field label.
+ * Redirect para lading page user not loggedin.
  */
-function my_acf_prepare_field( $field ) {
-	$field['label'] = 'Nome do profissional';
-	return $field;
-}
-add_filter( 'acf/prepare_field/name=_post_title', 'my_acf_prepare_field' );
+add_action(
+	'template_redirect',
+	function() {
+		// Get global post
+		global $post;
 
-/**
- * Apply bootstrap 4 styles on acf-forms.
- */
-function acf_form_bootstrap_styles( $args ) {
+		// Prevent access to page with ID of 2 and all children of this page
+		$page_id = 5;
+		if ( is_page() && ( $post->post_parent == $page_id || is_page( $page_id ) ) ) {
 
-	// Before ACF Form
-	if ( ! $args['html_before_fields'] )
-		$args['html_before_fields'] = '<div class="row">'; // May be .form-row
+			// Set redirect to true by default
+			$redirect = true;
 
-	// After ACF Form
-	if ( ! $args['html_after_fields'] )
-		$args['html_after_fields'] = '</div>';
+			// If logged in do not redirect
+			// You can/should place additional checks here based on user roles or user meta
+			if ( is_user_logged_in() ) {
+				$redirect = false;
+			}
 
-	// Success Message
-	if ( $args['html_updated_message'] == '<div id="message" class="updated"><p>%s</p></div>' )
-		$args['html_updated_message'] = '<div id="message" class="updated alert alert-success">%s</div>';
-
-	// Submit button
-	if ( $args['html_submit_button'] == '<input type="submit" class="acf-button button button-primary button-large" value="%s" />' )
-		$args['html_submit_button'] = '<input type="submit" class="acf-button button button-primary button-large btn btn-primary" value="%s" />';
-
-	return $args;
-
-}
-
-add_filter( 'acf/validate_form', 'acf_form_bootstrap_styles' );
-
-
-function acf_form_fields_bootstrap_styles( $field ) {
-
-	// Target ACF Form Front only
-	if ( is_admin() && ! wp_doing_ajax() )
-		return $field;
-
-	// Add .form-group & .col-12 fallback on fields wrappers
-	$field['wrapper']['class'] .= ' form-group col-12';
-
-	// Add .form-control on fields
-	$field['class'] .= ' form-control';
-
-	return $field;
-
-}
-
-add_filter( 'acf/prepare_field', 'acf_form_fields_bootstrap_styles' );
-
-function acf_form_fields_required_bootstrap_styles( $label ) {
-
-	// Target ACF Form Front only
-	if( is_admin() && ! wp_doing_ajax() )
-		return $label;
-
-	// Add .text-danger
-	$label = str_replace( '<span class="acf-required">*</span>', '<span class="acf-required text-danger">*</span>', $label );
-
-	return $label;
-
-}
-
-add_filter( 'acf/get_field_label', 'acf_form_fields_required_bootstrap_styles' );
+			// Redirect people without access to login page
+			if ( $redirect ) {
+				wp_redirect( 'http://avaliador.tri/login/', 307 );
+			}
+		}
+	}
+);
