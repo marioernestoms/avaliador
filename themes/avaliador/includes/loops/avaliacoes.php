@@ -1,36 +1,51 @@
-
-	<td scope="col" width="150">
-		<?php
-			$avaliacoes = get_posts(
+<?php
+	$avaliacoes = get_posts(
+		array(
+			'post_type'  => 'avaliacoes',
+			'meta_query' => array(
 				array(
-					'post_type'  => 'avaliacoes',
-					'meta_query' => array(
-						array(
-							'key'     => 'profissional',
-							'value'   => '"' . get_the_ID() . '"',
-							'compare' => 'LIKE',
-						),
-					),
-				)
-			);
+					'key'     => 'profissional',
+					'value'   => '"' . get_the_ID() . '"',
+					'compare' => 'LIKE',
+				),
+			),
+		)
+	);
+
+	$total_prof = 0;
+	$count_prof = 0;
+	$total_comp = 0;
+	$count_comp = 0;
+	?>
+
+
+	<!-- Calculo do total de avaliações profissionais e comportamentais -->
+	<?php
+	foreach ( $avaliacoes as $post ) : ?>
+
+		<?php
+		if ( get_field( 'avaliacao_profissional' ) ) {
+			$total_prof += get_field( 'avaliacao_profissional' );
+			$count_prof++;
+		}
 		?>
 
 		<?php
-		$total = 0;
-		$count = 0;
+		if ( get_field( 'avaliacao_comportamental' ) ) {
+			$total_comp += get_field( 'avaliacao_comportamental' );
+			$count_comp++;
+		}
 		?>
 
-		<?php
-		foreach ( $avaliacoes as $post ) {
-			if ( get_field( 'avaliacao_profissional' ) ) {
-				$total += get_field( 'avaliacao_profissional' );
-				$count++;
-			}
-		}
+	<?php endforeach; ?>
 
-		if ( 0 !== $total ) {
-			$average_prof = ( $total / $count );
-		}
+	<!-- Exibe com estrelas o total de avaliações -->
+	<?php
+	// Avaliações profissionais.
+	if ( 0 !== $total_prof ) {
+		$average_prof = ( $total_prof / $count_prof );
+
+		echo '<td scope="col" width="150">';
 
 		$star_prof = $average_prof;
 
@@ -46,60 +61,35 @@
 				echo '<i class="far fa-star text-warning"></i>';
 				$x++;
 			}
-		} else {
-			echo '<small>sem avaliação</small>';
 		}
-		?>
-	</td>
+		echo '</td>';
+	} else {
+		echo '<td scope="col" width="150"><small>sem avaliação</small></td>';
+	}
 
+	// Avaliações Comportamentais.
 
-	<td scope="col" width="150">
-			<?php
-			$avaliacoes = get_posts(
-				array(
-					'post_type'  => 'avaliacoes',
-					'meta_query' => array(
-						array(
-							'key'     => 'profissional',
-							'value'   => '"' . get_the_ID() . '"',
-							'compare' => 'LIKE',
-						),
-					),
-				)
-			);
+	if ( 0 !== $total_comp ) {
+		$average_comp = ( $total_comp / $count_comp );
 
-			$total_comp = 0;
-			$count_comp = 0;
-			?>
+		echo '<td scope="col" width="150">';
+		$star_comp = $average_comp;
 
-			<?php
-			foreach ( $avaliacoes as $post ) {
-				if ( get_field( 'avaliacao_comportamental' ) ) {
-					$total_comp += get_field( 'avaliacao_comportamental' );
-					$count_comp++;
-				}
+		if ( ! empty( $star_comp ) ) {
+			for ( $x = 1; $x <= $star_comp; $x++ ) {
+				echo '<i class="fa fa-star text-warning" aria-hidden="true"></i>';
 			}
-
-			if ( 0 !== $total_comp ) {
-				$average_comp = ( $total_comp / $count_comp );
+			if ( strpos( $star_comp, '.' ) ) {
+				echo '<i class="far fa-star"></i>';
+				$x++;
 			}
-
-			$star_comp = $average_comp;
-
-			if ( ! empty( $star_comp ) ) {
-				for ( $x = 1; $x <= $star_comp; $x++ ) {
-					echo '<i class="fa fa-star text-warning" aria-hidden="true"></i>';
-				}
-				if ( strpos( $star_comp, '.' ) ) {
-					echo '<i class="far fa-star"></i>';
-					$x++;
-				}
-				while ( $x <= 5 ) {
-					echo '<i class="far fa-star text-warning"></i>';
-					$x++;
-				}
-			} else {
-				echo '<small>sem avaliação</small>';
+			while ( $x <= 5 ) {
+				echo '<i class="far fa-star text-warning"></i>';
+				$x++;
 			}
-			?>
-		</td>
+		}
+		echo '</td>';
+	} else {
+		echo '<td scope="col" width="150"><small>sem avaliação</small></td>';
+	}
+
