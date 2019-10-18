@@ -1,0 +1,147 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.container-full {
+    margin: 0 auto;
+    width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    font-family: 'Raleway', sans-serif;
+}
+
+h1.h1 {
+    font-size: 36px;
+}
+
+h2,
+.h2 {
+    font-size: 30px;
+}
+
+h3,
+.h3 {
+    font-size: 24px;
+}
+
+h4,
+.h4 {
+    font-size: 18px;
+}
+
+h5,
+.h5 {
+    font-size: 14px;
+}
+
+h6,
+.h6 {
+    font-size: 12px;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+li {
+    list-style: none;
+}
+
+.pad-top {
+    padding-top: 90px;
+}
+
+.pad-btn {
+    margin-bottom: 15px;
+}
+
+.pad-no {
+    padding: 0;
+}
+
+.subtitles {
+    font-size: 20px;
+}
+
+.highlight {
+    color: #4d8aae;
+}
+
+.text-small {
+    font-size: 12px;
+
+    span {
+        margin-left: 5px;
+    }
+}
+
+.pad-top-sections {
+    padding-top: 60px;
+}
+
+.section-white {
+    background-color: $section-white;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.section-gray {
+    background-color: $section-gray;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+pre.prettyprint {
+    background: #000;
+    color: #00fd55;
+    padding: 16px !important;
+}
+
+.btn {
+    border-radius: 0;
+    padding: 3px 12px;
+}
+
+.btn-default {
+    background: transparent;
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    padding: 10px;
+}
+
+.scroll-down {
+    color: #fff;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.services-section {
+    padding-top: 40px;
+    text-align: center;
+    background: #fff;
+}
+
+.contact-section {
+    min-height: 45%;
+    padding: 40px 0;
+    background: #fff;
+}
+
+.footer {
+    padding-top: 50px;
+    text-align: center;
+}
