@@ -1,29 +1,24 @@
 <div class="row py-5">
 	<div class="col">
-		<?php echo do_shortcode( '[my_ajax_filter_search]' ); ?>
-	</div>
-	<div class="col text-right">
-		<!-- Modal -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					...
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				</div>
-				</div>
-			</div>
-		</div>
+		<div id="my-ajax-filter-search">
+			<form class="form-inline mt-2 mt-md-0" action="" method="get">
+				<input class="form-control mr-sm-2" type="text" name="profissional" id="profissional" value="" placeholder="Search" aria-label="Search">
 
+				<select class="custom-select mx-3" name="cargos" id="cargos">
+					<option selected>Selecione</option>
+					<option value="arquiteto-de-informacao">Arquiteto de informação</option>
+					<option value="designer">Designer</option>
+					<option value="dev-frontend">Desenvolvedor Front-End</option>
+					<option value="dev-backend">Desenvolvedor Back-End</option>
+					<option value="mkt-digita">Marketing Digital</option>
+				</select>
+
+				<input class="btn btn-outline-success my-2 my-sm-0" type="submit" id="submit" name="submit" value="Search">
+			</form>
+		</div>
+	</div>
+
+	<div class="col text-right">
 		<?php if ( current_user_can( 'administrator' ) ) : ?>
 
 			<a href="#" data-target="#novo-profissional" data-toggle="modal"><i class="far fa-plus-square"></i> cadastrar profissional</a>
@@ -37,11 +32,28 @@
 <div class="table-responsive">
 
 	<?php
+	$profissional = $_GET['profissional'];
+	$cargos       = $_GET['cargos'];
+
+	if ( ! empty( $cargos ) ) {
+		$cargo = $cargos;
+	} else {
+		$cargo = '';
+	}
+
 	$args = [
 		'post_type'      => 'profissionais',
 		'posts_per_page' => -1,
 		'order'          => 'ASC',
 		'orderby'        => 'title',
+		's'              => $profissional,
+		'meta_query' => array(
+			array(
+				'key'     => 'cargo',
+				'value'   => $cargo,
+				'compare' => 'LIKE',
+			),
+		),
 	];
 
 	$list_prof = new WP_Query( $args );
@@ -69,7 +81,13 @@
 				<tr>
 					<td scope="col" width="20%"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></td>
 					<td scope="col" width="300">
-						<?php the_field( 'cargo' ); ?>
+						<?php
+						$profissao = get_field_object( 'cargo' );
+						$value     = $profissao['value'];
+						$label     = $profissao['choices'][ $value ];
+
+						echo $label;
+						?>
 					</td>
 
 					<?php include( 'avaliacoes.php' ); ?> 

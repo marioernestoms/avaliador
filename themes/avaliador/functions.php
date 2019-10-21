@@ -103,38 +103,6 @@ function my_ajax_filter_search_scripts() {
 	wp_localize_script( 'my_ajax_filter_search', 'ajax_url', admin_url( 'admin-ajax.php' ) );
 }
 
-
-// Shortcode: [my_ajax_filter_search]
-function my_ajax_filter_search_shortcode() {
-	my_ajax_filter_search_scripts();
-
-	ob_start();
-	?>
-
-	<div id="my-ajax-filter-search">
-		<form class="form-inline mt-2 mt-md-0" action="" method="get">
-			<input class="form-control mr-sm-2" type="text" name="search" id="search" value="" placeholder="Search" aria-label="Search">
-
-			<select class="custom-select mx-3" name="cargos" id="cargos">
-				<option selected>Selecione</option>
-				<option value="1">Arquiteto de informação</option>
-				<option value="2">Designer</option>
-				<option value="3">Desenvolvedor Front-End</option>
-				<option value="3">Desenvolvedor Back-End</option>
-				<option value="3">Marketing Digital</option>
-			</select>
-
-			<input class="btn btn-outline-success my-2 my-sm-0" type="submit" id="submit" name="submit" value="Search">
-		</form>
-		<ul id="ajax_fitler_search_results"></ul>
-	</div>
-
-	<?php
-	return ob_get_clean();
-}
-
-add_shortcode( 'my_ajax_filter_search', 'my_ajax_filter_search_shortcode' );
-
 /**
  * Redirect para lading page user not loggedin.
  */
