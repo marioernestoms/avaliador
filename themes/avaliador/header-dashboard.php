@@ -39,7 +39,7 @@ global $wp_roles;
 			<a class="navbar-brand" href="/">Avaliador</a>
 
 			<div class="collapse navbar-collapse" id="navbarCollapse">
-				<ul class="navbar-nav mr-auto">
+				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
 					<a class="nav-link" href="/profissionais">Profissionais</a>
 					</li>
@@ -47,10 +47,7 @@ global $wp_roles;
 					<a class="nav-link" href="/empresas">Empresas</a>
 					</li>
 				</ul>
-				<form class="form-inline mt-2 mt-md-0">
-					<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-				</form>
+
 				<div class="dropdown ml-4">
 					<?php if ( ! is_user_logged_in() ) : ?>
 						<a class="dropdown-toggle text-white" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user mr-1" aria-hidden="true"></i> Login</a>

@@ -19,17 +19,7 @@ get_header( 'dashboard' );
 		<div class="row py-5">
 			<div class="col">
 				<form class="form-inline mt-2 mt-md-0">
-					<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-
-					<select class="custom-select mx-3">
-						<option selected>Selecione</option>
-						<option value="1">Arquiteto de informação</option>
-						<option value="2">Designer</option>
-						<option value="3">Desenvolvedor Front-End</option>
-						<option value="3">Desenvolvedor Back-End</option>
-						<option value="3">Marketing Digital</option>
-					</select>
-
+					<input class="form-control mr-sm-2" type="text" name="empresa" id="empresa" value="" placeholder="Search" aria-label="Search">
 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 				</form>
 			</div>
@@ -67,10 +57,13 @@ get_header( 'dashboard' );
 
 		<div class="table-responsive">
 			<?php
+			$emmpresa = $_GET['profissional'];
+
 			$args = [
 				'role'    => 'Empresa',
-				'orderby' => 'user_nicename',
+				'orderby' => 'first_name',
 				'order'   => 'ASC',
+				's'       => $empresa,
 			];
 			$empresas = get_users( $args );
 			?>
@@ -83,13 +76,8 @@ get_header( 'dashboard' );
 						?>
 
 						<tr>
-							<td scope="col" width="20%"><a href="<?php the_permalink(); ?>"><?php echo the_author_meta( 'first_name', $empresa->ID ); ?></a></td>
-							<td scope="col" width="300">
-								Responsável
-							</td>
-							<td scope="col" width="100">A</td>
-							<td scope="col" width="300">A</td>
-							<td scope="col" width="100">
+							<td scope="col" width="80%"><a href="<?php the_permalink(); ?>"><?php echo the_author_meta( 'first_name', $empresa->ID ); ?></a></td>
+							<td scope="col" width="10%">
 								<a href="#" data-target="#editar-empresa-<?php echo $empresa->ID; ?>" data-toggle="modal" class="text-secondary"><i class="far fa-edit"></i> Editar</a>
 								<?php include( 'includes/modal/modal-edit-empresa.php' ); ?>
 							</td>
