@@ -127,7 +127,8 @@ add_action(
 
 			// Redirect people without access to login page
 			if ( $redirect ) {
-				wp_redirect( 'http://avaliador.tri/login/', 307 );
+				$login_page = get_page_by_title( 'login' );
+				wp_redirect( get_permalink( $login_page->ID ) );
 			}
 		}
 	}
