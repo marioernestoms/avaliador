@@ -22,7 +22,7 @@
 							'label_placement' => 'left',
 							'field_groups'    => false,
 							'fields'          => false,
-							'post_title'      => true,
+							'post_title'      => false,
 							'new_post'        => array(
 								'post_type'   => 'avaliacoes',
 								'post_status' => 'publish',
