@@ -5,7 +5,7 @@
 				<input class="form-control mr-sm-2" type="text" name="profissional" id="profissional" value="" placeholder="Search" aria-label="Search">
 
 				<select class="custom-select mx-3" name="cargos" id="cargos">
-					<option selected>Selecione</option>
+					<option value="">Selecione</option value="">
 					<option value="arquiteto-de-informacao">Arquiteto de informação</option>
 					<option value="designer">Designer</option>
 					<option value="dev-frontend">Desenvolvedor Front-End</option>
@@ -47,7 +47,7 @@
 		'order'          => 'ASC',
 		'orderby'        => 'title',
 		's'              => $profissional,
-		'meta_query' => array(
+		'meta_query' 	 => array(
 			array(
 				'key'     => 'cargo',
 				'value'   => $cargo,
