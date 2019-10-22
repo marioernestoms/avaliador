@@ -35,33 +35,49 @@ get_header( 'dashboard' );
 						<div class="card-body">
 							<h5 class="card-title">Sobre</h5>
 							<ul class="list-unstyled mb-0">
+								<li class="mb-3">
+									<?php the_field( 'descricao' ); ?>
+								</li>
+
+								<?php
+								$cidade = get_field( 'cidade' );
+
+								if ( ! empty( $cidade ) ) :
+									?>
 								<li class="mb-1">
 									<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> 
-									Lives in <a href="/dashboard/default">San Francisco, SA</a>
+									<span class="text-bold"><?php echo $cidade; ?></span>
 								</li>
-								<li class="mb-1">
-									<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg> 
-									Works at <a href="/dashboard/default">GitHub</a>
-								</li>
-								<li class="mb-1">
-									<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> 
-									From <a href="/dashboard/default">Boston</a>
-								</li>
+								<?php endif; ?>
 							</ul>
 						</div>
 						<hr class="my-0">
 						<div class="card-body">
 							<h5 class="card-title">Onde encontrar</h5>
 							<ul class="list-unstyled mb-0">
-								<li class="mb-1">
-									<a href="/dashboard/default"><i class="fab fa-facebook mr-1"></i> Facebook</a>
-								</li>
-								<li class="mb-1">
-									<a href="/dashboard/default"> <i class="fab fa-instagram mr-1"></i>Instagram</a>
-								</li>
-								<li class="mb-1">
-									<a href="/dashboard/default"><i class="fab fa-linkedin mr-1"></i> LinkedIn</a>
-								</li>
+								<?php
+								$linkedin  = get_field( 'linkedin' );
+								$facebook  = get_field( 'facebook' );
+								$instagram = get_field( 'instagram' );
+								?>
+
+								<?php if ( ! empty( $linkedin ) ) : ?>
+									<li class="mb-1">
+										<a href="<?php echo $linkedin; ?>"><i class="fab fa-linkedin mr-1"></i> LinkedIn</a>
+									</li>
+								<?php endif; ?>
+
+								<?php if ( ! empty( $facebook ) ) : ?>
+									<li class="mb-1">
+										<a href="<?php echo $facebook; ?>"><i class="fab fa-facebook mr-1"></i> Facebook</a>
+									</li>
+								<?php endif; ?>
+
+								<?php if ( ! empty( $instagram ) ) : ?>
+									<li class="mb-1">
+										<a href="<?php echo $instagram; ?>"><i class="fab fa-instagram mr-1"></i>Instagram</a>
+									</li>
+								<?php endif; ?>
 							</ul>
 						</div>
 					</div>
