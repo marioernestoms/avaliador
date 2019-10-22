@@ -15,20 +15,10 @@
 							array(
 								'post_title'   => true,
 								'submit_value' => 'Atualizar',
-							),
+							)
 						);
 						?>
 					</div>
-
-					<script>
-					$ = jQuery;
-						$(".edit-form").click(function(){
-							$(".form-off").toggleClass("form-on");
-							$(this).toggleClass("form-on");
-						}, function() {
-							$(".form-off").toggleClass("form-on");
-						});
-					</script>
 
 			</div>
 
